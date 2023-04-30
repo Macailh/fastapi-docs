@@ -18,6 +18,14 @@ def read_root():
     return {"Hello": "World"}
 
 
+@app.get("/items/")
+async def read_items(q: Annotated[str | None, Query(min_length=3, max_length=50)] = None):
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
+
+
 @app.post("/items/")
 def create_item(item: Item):
     item_dict = item.dict()
