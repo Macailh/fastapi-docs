@@ -1,5 +1,5 @@
 from typing import Union, Annotated
-from fastapi import FastAPI, Query, Path
+from fastapi import FastAPI, Query, Path, Body
 from pydantic import BaseModel, Field
 
 app = FastAPI()
@@ -52,8 +52,6 @@ async def read_itemss(
 
 
 @app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item, q: Union[str, None] = None):
-    result = {"item_id": item_id, **item.dict()}
-    if q:
-        result.update({"q": q})
-    return result
+async def update_item(item_id: int, item: Annotated[Item, Body(embed=True)]):
+    results = {"item_id": item_id, "item": item}
+    return results
