@@ -19,7 +19,7 @@ def read_root():
 
 
 @app.get("/items/")
-async def read_items(q: Annotated[str | None, Query(min_length=3, max_length=50)] = None):
+async def read_items(q: Annotated[Union[str, None], Query(alias="item-query")] = None):
     results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
     if q:
         results.update({"q": q})
@@ -33,11 +33,6 @@ def create_item(item: Item):
         price_with_tax = item.price + item.tax
         item_dict.update({"price_with_tax": price_with_tax})
     return item_dict
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
 
 
 @app.put("/items/{item_id}")
