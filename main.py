@@ -1,7 +1,7 @@
 from uuid import UUID
 from datetime import datetime, time, timedelta
 from typing import Union, Annotated
-from fastapi import FastAPI, Query, Path, Body
+from fastapi import FastAPI, Query, Path, Body, Cookie, Header
 from pydantic import BaseModel, Field, HttpUrl
 
 app = FastAPI()
@@ -59,6 +59,16 @@ async def read_items(q: Annotated[Union[str, None], Query(alias="item-query")] =
     if q:
         results.update({"q": q})
     return results
+
+
+@app.get("/items/")
+async def read_items_cookie(ads_id: Annotated[str | None, Cookie()] = None):
+    return {"ads_id": ads_id}
+
+
+@app.get("/items/")
+async def read_items_header(user_agent: Annotated[str | None, Header()] = None):
+    return {"User-Agent": user_agent}
 
 
 @app.post("/items/")
