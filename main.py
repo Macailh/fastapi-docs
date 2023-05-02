@@ -22,6 +22,22 @@ class Item(BaseModel):
     tags: set[str] = set()
     image: list[Image] | None = None
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "Camisa",
+                "description": "Camisa de algodón",
+                "price": 15.99,
+                "tax": 2.0,
+                "is_offer": True,
+                "tags": ["ropa", "algodón", "camisa"],
+                "image": [
+                    {"url": "https://example.com/image1.jpg", "name": "imagen1"},
+                    {"url": "https://example.com/image2.jpg", "name": "imagen2"}
+                ]
+            }
+        }
+
 
 class Offer(BaseModel):
     name: str
